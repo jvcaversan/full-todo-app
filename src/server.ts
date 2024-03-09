@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import dbConnect from "./db";
 import userRoutes from "./routes/user.routes";
+import categoryRoutes from "./routes/category.routes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/ping", (req: Request, res: Response) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/category", categoryRoutes);
 
 app.listen(PORT, () => {
   console.log("Server Running");
