@@ -38,6 +38,27 @@ export const createTask = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const toggleTaskStatus = async (req: Request, res: Response) => {
+  try {
+    const { isCompleted } = req.body;
+    const { id } = req.params;
+
+    const task = await Task.updateOne(
+      {
+        _id: id,
+      },
+      {
+        isCompleted,
+      }
+    );
+
+    res.send(task);
+  } catch (error) {
+    console.log("erro", error);
+    res.send({ message: "erro ao selecionar tarefa" });
+  }
+};
+
 export const deleteTask = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
