@@ -15,8 +15,8 @@ app.get("/ping", (req: Request, res: Response) => {
   res.send("Pong");
 });
 
-app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
+app.use("/user", userRoutes);
 
 app.listen(PORT, () => {
   console.log("Server Running");

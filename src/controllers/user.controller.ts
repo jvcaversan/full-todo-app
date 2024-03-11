@@ -7,7 +7,7 @@ import { IUser } from "../types";
 
 const getUserToken = (_id: string | Types.ObjectId) => {
   const authenticatedUserToken = jwt.sign({ _id }, "express", {
-    expriresIn: "7d",
+    expiresIn: "7d",
   });
 
   return authenticatedUserToken;
