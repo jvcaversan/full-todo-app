@@ -3,6 +3,7 @@ import express from "express";
 import { authenticationMiddleware } from "../middleware";
 import {
   createTask,
+  deleteTask,
   getAllTasksByCategory,
   getAlltasks,
   toggleTaskStatus,
@@ -16,5 +17,6 @@ taskRoutes.route("/").get(getAlltasks);
 taskRoutes.route("/task-by-categories/:id").get(getAllTasksByCategory);
 taskRoutes.route("/create").post(createTask);
 taskRoutes.route("/update/:id").put(toggleTaskStatus);
+taskRoutes.route("/:id").delete(deleteTask);
 
 export default taskRoutes;

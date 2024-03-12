@@ -82,12 +82,12 @@ export const getAllTasksByCategory = async (
 export const deleteTask = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    console.log("Deleting category with ID:", id);
+    console.log("Deleting task with ID:", id);
 
     await Task.deleteOne({ _id: id });
-    res.send({ message: "Categoria deletada" });
+    res.send({ message: "Tarefa deletada" });
   } catch (error) {
-    console.log("erro ao deletar uma categoria", error);
+    console.log("erro ao deletar uma tarefa", error);
     throw error;
   }
 };
