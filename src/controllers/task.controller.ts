@@ -38,7 +38,7 @@ export const createTask = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const toggleTaskStatus = async (req: Request, res: Response) => {
+export const toggleTaskStatus = async (req: AuthRequest, res: Response) => {
   try {
     const { isCompleted } = req.body;
     const { id } = req.params;
@@ -56,6 +56,26 @@ export const toggleTaskStatus = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("erro", error);
     res.send({ message: "erro ao selecionar tarefa" });
+  }
+};
+
+export const getAllTasksByCategory = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const userId = req.user;
+    const { id } = req.params;
+
+    const tasks = await Task.find({
+      user: userId,
+      categoryId: id,
+    });
+    res.send(tasks);
+  } catch (error) {
+    console.log("erro ao buscar tarefas dessa categoria", error);
+    res.send({ message: "erro ao buscar tarefas" });
+    throw error;
   }
 };
 
