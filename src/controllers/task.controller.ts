@@ -79,22 +79,57 @@ export const getAllTasksByCategory = async (
   }
 };
 
-export const deleteTask = async (req: AuthRequest, res: Response) => {
+export const getAllCompletedTasks = async (req: AuthRequest, res: Response) => {
   try {
-    const { id } = req.params;
-    console.log("Deleting task with ID:", id);
+    const userId = req.user;
 
-    await Task.deleteOne({ _id: id });
-    res.send({ message: "Tarefa deletada" });
+    const tasks = await Task.find({
+      user: userId,
+      isCompleted: true,
+    });
+    res.send(tasks);
   } catch (error) {
-    console.log("erro ao deletar uma tarefa", error);
+    console.log("erro ao buscar tarefas completadas", error);
+    res.send({ message: "erro ao buscar tarefas completadas" });
     throw error;
   }
 };
 
+export const getTasksForToday = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user;
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    const tasks = await Task.find({
+      user: userId,
+      date: currentDate.toISOString(),
+    });
+    res.send(tasks);
+  } catch (error) {
+    console.log("erro ao buscar tarefas de hoje", error);
+    res.send({ message: "erro ao buscar tarefas de hoje" });
+    throw error;
+  }
+};
+
+// export const deleteTask = async (req: AuthRequest, res: Response) => {
+//   try {
+//     const { id } = req.params;
+//     console.log("Deleting task with ID:", id);
+
+//     await Task.deleteOne({ _id: id });
+//     res.send({ message: "Tarefa deletada" });
+//   } catch (error) {
+//     console.log("erro ao deletar uma tarefa", error);
+//     throw error;
+//   }
+// };
+
 export const updateTask = async (req: AuthRequest, res: Response) => {
   try {
-    const { _id, date, isCompleted, name }: ITask = req.body;
+    const { _id, date, categoryId, name }: ITask = req.body;
     await Task.updateOne(
       {
         _id,
@@ -103,16 +138,14 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
         $set: {
           name,
           date,
-          isCompleted,
+          categoryId,
         },
       }
     );
 
-    return res
-      .status(201)
-      .json({ message: "Categoria atualizada com Sucesso!" });
+    return res.status(201).json({ message: "Tarefa atualizada com Sucesso!" });
   } catch (error) {
-    console.log("error ao atualizar a categoria", error);
+    console.log("error ao atualizar a tarefa", error);
     res.send({ message: "Algo deu errado" });
     throw error;
   }
